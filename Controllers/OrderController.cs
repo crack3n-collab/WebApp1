@@ -22,7 +22,7 @@ namespace FYP2.Controllers
         // GET: Order
         public async Task<IActionResult> Index()
         {
-            var webApp1IdentityDbContext = _context.Orders.Include(o => o.Item);
+            var webApp1IdentityDbContext = _context.Orders.Include(o => o.Items);
             return View(await webApp1IdentityDbContext.ToListAsync());
         }
 
@@ -35,7 +35,7 @@ namespace FYP2.Controllers
             }
 
             var orders = await _context.Orders
-                .Include(o => o.Item)
+                .Include(o => o.Items)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (orders == null)
             {
@@ -57,7 +57,7 @@ namespace FYP2.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ItemId,Quantity,Note")] Orders orders)
+        public async Task<IActionResult> Create([Bind("Id,Note")] Orders orders)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +65,7 @@ namespace FYP2.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ItemId"] = new SelectList(_context.MenuItem, "Id", "Id", orders.ItemId);
+            ViewData["ItemId"] = new SelectList(_context.MenuItem, "Id", "Id", orders.Id);
             return View(orders);
         }
 
@@ -82,7 +82,7 @@ namespace FYP2.Controllers
             {
                 return NotFound();
             }
-            ViewData["ItemId"] = new SelectList(_context.MenuItem, "Id", "Id", orders.ItemId);
+            ViewData["ItemId"] = new SelectList(_context.MenuItem, "Id", "Id", orders.Id);
             return View(orders);
         }
 
@@ -118,7 +118,7 @@ namespace FYP2.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ItemId"] = new SelectList(_context.MenuItem, "Id", "Id", orders.ItemId);
+            ViewData["ItemId"] = new SelectList(_context.MenuItem, "Id", "Id", orders.Id);
             return View(orders);
         }
 
@@ -131,7 +131,7 @@ namespace FYP2.Controllers
             }
 
             var orders = await _context.Orders
-                .Include(o => o.Item)
+                .Include(o => o.Items)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (orders == null)
             {

@@ -1,13 +1,29 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using FYP2.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace FYP2.Model
 {
     public class SeedData
     {
+        public static void Initialize(IServiceProvider serviceProvider)
+        {
+            using (var context = new WebApp1IdentityDbContext(
+                   serviceProvider.GetRequiredService<
+                       DbContextOptions<WebApp1IdentityDbContext>>()))
+            {
+                InitializeCategory(context);
+                InitializeMenu(context);
+                InitializeOrders(context);
+                InitializeOrderitems(context);
+            }
 
-        public static void InitializeMenu(WebApp1IdentityDbContext context) {
-            
+        }
+
+
+        public static void InitializeMenu(WebApp1IdentityDbContext context)
+        {
+
             {
                 if (context == null || context.MenuItem == null)
                 {
@@ -148,19 +164,10 @@ namespace FYP2.Model
             }
         }
 
-        public static void Initialize(IServiceProvider serviceProvider)
+     
+        public static void InitializeCategory(WebApp1IdentityDbContext context)
         {
-            using (var context = new WebApp1IdentityDbContext(
-                   serviceProvider.GetRequiredService<
-                       DbContextOptions<WebApp1IdentityDbContext>>())) {
-                InitializeCategory(context);
-                InitializeMenu(context);
-            }
 
-        }
-            public static void InitializeCategory(WebApp1IdentityDbContext context)
-        {
-            
             {
 
                 if (context == null || context.Category == null)
@@ -229,12 +236,12 @@ namespace FYP2.Model
                        Cname = "Drinks",
                        CatOrder = 8
                    }
-                ) ;
+                );
                 context.SaveChanges();
             }
 
             //menuitem
-           
+
         }
 
 
@@ -257,25 +264,45 @@ namespace FYP2.Model
                 context.Orders.AddRange(
                     new Orders
                     {
-                        Id = 1,
-                        UserId = "Henan",
-                        ItemId = "Grilled Striploin",
-                        Quantity = 12,
-                        Note = "Grilled to medium rare"
-
-                    },
-
-                    new Orders
-                    {
-                        Id = 2,
-                        UserId = "jonlee",
-                        ItemId = "Beef Steak",
-                        Quantity = 1,
-                        Note = "Grilled to perfect"
+                        UserId = "b74ddd14-6340-4840-95c2-db12554843e5",
+                        Note = "Grilled to medium rare",
                     }
+
                 );
                 context.SaveChanges();
             }
+        }
+        public static void InitializeOrderitems(WebApp1IdentityDbContext context)
+        {
+            if (context == null || context.Orders == null)
+            {
+                throw new ArgumentNullException("Null WebApp1IdentityDbContext");
+            }
+
+            // Look for any movies.
+            if (context.OrderItems.Any())
+            {
+                return;   // DB has been seeded
+            }
+
+            context.OrderItems.AddRange(
+                  new OrderItem
+                  {
+                      ItemId = "A01",
+                      OrderID = 1,
+                      Price = 12.0m,
+                      Quantity = 1
+                  },
+                       new OrderItem
+                       {
+                           ItemId = "A02",
+                           OrderID = 1,
+                           Price = 13.0m,
+                           Quantity = 1
+                       }
+
+              );
+            context.SaveChanges();
         }
     }
 }
