@@ -9,6 +9,6 @@
 
         public int? CatOrder { get; set; }
 
-        //public virtual ICollection<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
+        //public virtual ICollection<MenuItem> MenuItem { get; set; } = new List<MenuItem>();
     }
 }

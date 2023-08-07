@@ -236,5 +236,47 @@ namespace FYP2.Model
             //menuitem
            
         }
+
+
+        public static void InitializeOrders(WebApp1IdentityDbContext context)
+        {
+
+            {
+                if (context == null || context.Orders == null)
+                {
+                    throw new ArgumentNullException("Null WebApp1IdentityDbContext");
+                }
+
+                // Look for any movies.
+                if (context.Orders.Any())
+                {
+                    return;   // DB has been seeded
+                }
+
+                //
+                context.Orders.AddRange(
+                    new Orders
+                    {
+                        Id = 1,
+                        UserId = "Henan",
+                        ItemId = "Grilled Striploin",
+                        Quantity = 12,
+                        Note = "Grilled to medium rare"
+
+                    },
+
+                    new Orders
+                    {
+                        Id = 2,
+                        UserId = "jonlee",
+                        ItemId = "Beef Steak",
+                        Quantity = 1,
+                        Note = "Grilled to perfect"
+                    }
+                );
+                context.SaveChanges();
+            }
+        }
     }
 }
+
